@@ -52,7 +52,7 @@ const FeaturesSection = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16 animate-slide-up">
-          <h2 class name="text-4xl md:text-5xl font-bold gradient-primary bg-clip-text text-transparent mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold gradient-primary bg-clip-text text-transparent mb-6">
             Why Choose DocSpot?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
