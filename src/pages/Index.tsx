@@ -32,6 +32,8 @@ const Index = () => {
         <TestimonialsSection />
       </main>
 
+      <Footer />
+
       <AuthModal 
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
