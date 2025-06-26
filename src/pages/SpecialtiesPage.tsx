@@ -1,20 +1,11 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import Header from '@/components/layout/Header';
-import AuthModal from '@/components/auth/AuthModal';
 import { Button } from '@/components/ui/button';
 import { Heart, Brain, Baby, Bone, Eye, Ear, Scissors, Pill } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const SpecialtiesPage = () => {
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authModalType, setAuthModalType] = useState<'login' | 'register'>('login');
-
-  const handleAuthClick = (type: 'login' | 'register') => {
-    setAuthModalType(type);
-    setIsAuthModalOpen(true);
-  };
-
   const specialties = [
     {
       icon: Heart,
@@ -84,7 +75,7 @@ const SpecialtiesPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-cyan-50">
-      <Header onAuthClick={handleAuthClick} />
+      <Header />
       
       <main className="pt-24 pb-12">
         {/* Hero Section */}
@@ -142,22 +133,15 @@ const SpecialtiesPage = () => {
                 We're constantly expanding our network of healthcare providers. 
                 Contact us to request a specific specialty or doctor.
               </p>
-              <Button 
-                onClick={() => handleAuthClick('register')}
-                className="bg-white text-violet-600 hover:bg-gray-100 px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
-              >
-                Contact Us
-              </Button>
+              <Link to="/contact">
+                <Button className="bg-white text-violet-600 hover:bg-gray-100 px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all">
+                  Contact Us
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
       </main>
-
-      <AuthModal 
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        defaultTab={authModalType}
-      />
     </div>
   );
 };

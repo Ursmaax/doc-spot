@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
-import AuthModal from '@/components/auth/AuthModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,8 +9,6 @@ import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const ContactPage = () => {
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authModalType, setAuthModalType] = useState<'login' | 'register'>('login');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -20,11 +17,6 @@ const ContactPage = () => {
     message: ''
   });
   const { toast } = useToast();
-
-  const handleAuthClick = (type: 'login' | 'register') => {
-    setAuthModalType(type);
-    setIsAuthModalOpen(true);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,7 +63,7 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-cyan-50">
-      <Header onAuthClick={handleAuthClick} />
+      <Header />
       
       <main className="pt-24 pb-12">
         {/* Hero Section */}
@@ -234,12 +226,6 @@ const ContactPage = () => {
           </section>
         </div>
       </main>
-
-      <AuthModal 
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        defaultTab={authModalType}
-      />
     </div>
   );
 };

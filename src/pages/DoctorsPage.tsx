@@ -1,26 +1,20 @@
 
 import React, { useState, useMemo } from 'react';
 import Header from '@/components/layout/Header';
-import AuthModal from '@/components/auth/AuthModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Search, Filter, MapPin, Star, Calendar, Clock, Users, Award } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const DoctorsPage = () => {
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authModalType, setAuthModalType] = useState<'login' | 'register'>('login');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecialty, setSelectedSpecialty] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('all');
   const [sortBy, setSortBy] = useState('rating');
-
-  const handleAuthClick = (type: 'login' | 'register') => {
-    setAuthModalType(type);
-    setIsAuthModalOpen(true);
-  };
+  const navigate = useNavigate();
 
   // Enhanced doctor data with more variety
   const doctors = [
@@ -171,7 +165,7 @@ const DoctorsPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-cyan-50">
-      <Header onAuthClick={handleAuthClick} />
+      <Header />
       
       <main className="pt-24 pb-12">
         <div className="container mx-auto px-4">
@@ -319,7 +313,7 @@ const DoctorsPage = () => {
 
                   <Button 
                     className="w-full h-12 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all"
-                    onClick={() => handleAuthClick('register')}
+                    onClick={() => navigate('/auth')}
                   >
                     <Calendar className="w-5 h-5 mr-2" />
                     Book Appointment
@@ -366,12 +360,6 @@ const DoctorsPage = () => {
           )}
         </div>
       </main>
-
-      <AuthModal 
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        defaultTab={authModalType}
-      />
     </div>
   );
 };

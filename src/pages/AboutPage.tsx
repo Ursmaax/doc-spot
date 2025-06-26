@@ -1,19 +1,10 @@
 
 import React from 'react';
 import Header from '@/components/layout/Header';
-import AuthModal from '@/components/auth/AuthModal';
 import { useState } from 'react';
 import { Heart, Users, Award, Clock, Shield, Stethoscope } from 'lucide-react';
 
 const AboutPage = () => {
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authModalType, setAuthModalType] = useState<'login' | 'register'>('login');
-
-  const handleAuthClick = (type: 'login' | 'register') => {
-    setAuthModalType(type);
-    setIsAuthModalOpen(true);
-  };
-
   const stats = [
     { icon: Users, value: '50,000+', label: 'Happy Patients' },
     { icon: Stethoscope, value: '1,200+', label: 'Expert Doctors' },
@@ -46,7 +37,7 @@ const AboutPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 via-blue-50 to-cyan-50">
-      <Header onAuthClick={handleAuthClick} />
+      <Header />
       
       <main className="pt-24 pb-12">
         {/* Hero Section */}
@@ -145,12 +136,6 @@ const AboutPage = () => {
           </div>
         </section>
       </main>
-
-      <AuthModal 
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        defaultTab={authModalType}
-      />
     </div>
   );
 };
