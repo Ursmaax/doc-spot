@@ -1,30 +1,23 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import AuthModal from '@/components/auth/AuthModal';
 import HeroSection from '@/components/home/HeroSection';
 import FeaturesSection from '@/components/home/FeaturesSection';
 import SpecialtiesSection from '@/components/home/SpecialtiesSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authModalType, setAuthModalType] = useState<'login' | 'register'>('login');
-
-  const handleAuthClick = (type: 'login' | 'register') => {
-    setAuthModalType(type);
-    setIsAuthModalOpen(true);
-  };
+  const navigate = useNavigate();
 
   const handleBookAppointment = () => {
-    setAuthModalType('register');
-    setIsAuthModalOpen(true);
+    navigate('/auth');
   };
 
   return (
     <div className="min-h-screen">
-      <Header onAuthClick={handleAuthClick} />
+      <Header />
       
       <main>
         <HeroSection onBookAppointment={handleBookAppointment} />
@@ -34,12 +27,6 @@ const Index = () => {
       </main>
 
       <Footer />
-
-      <AuthModal 
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        defaultTab={authModalType}
-      />
     </div>
   );
 };

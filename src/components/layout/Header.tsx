@@ -1,15 +1,24 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Calendar, Menu, X, Stethoscope } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Calendar, Menu, X, Stethoscope, LogOut, User } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
-interface HeaderProps {
-  onAuthClick: (type: 'login' | 'register') => void;
-}
-
-const Header = ({ onAuthClick }: HeaderProps) => {
+const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAuthClick = () => {
+    navigate('/auth');
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass backdrop-blur-xl border-b border-white/10">
@@ -41,20 +50,41 @@ const Header = ({ onAuthClick }: HeaderProps) => {
 
           {/* Auth Buttons - Desktop */}
           <div className="hidden md:flex items-center gap-3">
-            <Button 
-              variant="ghost" 
-              onClick={() => onAuthClick('login')}
-              className="text-gray-700 hover:text-primary-600"
-            >
-              Login
-            </Button>
-            <Button 
-              onClick={() => onAuthClick('register')}
-              className="gradient-primary text-white hover:shadow-lg hover:scale-105 transition-all"
-            >
-              <Calendar className="w-4 h-4 mr-2" />
-              Book Now
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    <span className="hidden lg:inline">
+                      {user.user_metadata?.firstName || user.email}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={handleSignOut} className="text-red-600">
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button 
+                  variant="ghost" 
+                  onClick={handleAuthClick}
+                  className="text-gray-700 hover:text-primary-600"
+                >
+                  Login
+                </Button>
+                <Button 
+                  onClick={handleAuthClick}
+                  className="gradient-primary text-white hover:shadow-lg hover:scale-105 transition-all"
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Book Now
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -103,26 +133,42 @@ const Header = ({ onAuthClick }: HeaderProps) => {
                 Contact
               </Link>
               <div className="flex flex-col gap-3 pt-4 border-t border-gray-200">
-                <Button 
-                  variant="ghost" 
-                  onClick={() => {
-                    onAuthClick('login');
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="justify-start text-gray-700 hover:text-primary-600"
-                >
-                  Login
-                </Button>
-                <Button 
-                  onClick={() => {
-                    onAuthClick('register');
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="gradient-primary text-white hover:shadow-lg transition-all"
-                >
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Book Now
-                </Button>
+                {user ? (
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => {
+                      handleSignOut();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="justify-start text-red-600 hover:text-red-700"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                ) : (
+                  <>
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => {
+                        handleAuthClick();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="justify-start text-gray-700 hover:text-primary-600"
+                    >
+                      Login
+                    </Button>
+                    <Button 
+                      onClick={() => {
+                        handleAuthClick();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="gradient-primary text-white hover:shadow-lg transition-all"
+                    >
+                      <Calendar className="w-4 h-4 mr-2" />
+                      Book Now
+                    </Button>
+                  </>
+                )}
               </div>
             </nav>
           </div>
